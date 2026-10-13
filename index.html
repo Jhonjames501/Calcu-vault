@@ -8,13 +8,8 @@
 </head>
 <body>
 
-    <!-- Marco de la App Estilo iPhone -->
+    <!-- Marco de la App Estilo iPhone (Sin texto superior molesto) -->
     <div class="iphone-frame">
-        
-        <!-- Header exacto de la referencia -->
-        <div class="status-bar">
-            <span>📶 CALCU VAULT | 23:11 | Lima, Perú 84%</span>
-        </div>
 
         <!-- ================= PANTALLA 1: MODO CALCULADORA ================= -->
         <div id="screen-calc" class="screen active">
@@ -53,7 +48,7 @@
         <!-- ================= PANTALLA 2: GALERÍA PRIVADA ================= -->
         <div id="screen-gallery" class="screen">
             <div class="gallery-header">
-                <div class="gallery-title">GALERÍA PRIVADA</div>
+                <div class="gallery-title" onclick="lockVault()" style="cursor: pointer;" title="Toca para bloquear">GALERÍA PRIVADA 🔒</div>
                 <div class="gallery-subtitle" id="vault-counter">12 ELEMENTOS BLOQUEADA</div>
             </div>
 
@@ -65,7 +60,6 @@
 
             <div id="tab-photos" class="media-grid">
                 <div class="media-item add-btn" onclick="triggerFileUpload('image/*')">+</div>
-                <!-- Grilla de elementos borrosos con candado simulando la referencia -->
                 <div class="media-item"><div class="lock-overlay">🔒</div></div>
                 <div class="media-item"><div class="lock-overlay">🔒</div></div>
                 <div class="media-item"><div class="lock-overlay">🔒</div></div>
@@ -104,7 +98,6 @@
             <div class="intruder-photo-container">
                 <video id="webcam" autoplay playsinline muted style="display:none;"></video>
                 <canvas id="snapshot-canvas" style="display:none;"></canvas>
-                <!-- Imagen idéntica a la referencia del intruso con capucha -->
                 <img id="intruder-photo-display" src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=600&auto=format&fit=crop" alt="Intruso">
             </div>
 
