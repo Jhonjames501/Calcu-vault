@@ -40,24 +40,11 @@ body {
     box-shadow: 0 25px 50px rgba(0,0,0,0.9);
 }
 
-.status-bar {
-    height: 44px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text-muted);
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid rgba(255,255,255,0.03);
-    flex-shrink: 0;
-}
-
 .screen {
     display: none;
     flex: 1;
     flex-direction: column;
-    padding: 20px;
+    padding: 24px 20px 20px 20px;
     overflow-y: auto;
 }
 
@@ -65,7 +52,6 @@ body {
     display: flex;
 }
 
-/* Calculadora Estilo Neón */
 .calc-mode-title {
     text-align: center;
     font-size: 11px;
@@ -144,7 +130,6 @@ body {
     text-transform: uppercase;
 }
 
-/* Galería Privada */
 .gallery-header {
     text-align: center;
     margin-bottom: 15px;
@@ -155,6 +140,11 @@ body {
     font-weight: 700;
     letter-spacing: 1px;
     margin-bottom: 4px;
+    transition: opacity 0.2s;
+}
+
+.gallery-title:active {
+    opacity: 0.7;
 }
 
 .gallery-subtitle {
@@ -238,7 +228,6 @@ body {
     margin-top: 10px;
 }
 
-/* Alerta de Intruso */
 .intruder-header {
     text-align: center;
     margin-bottom: 15px;
