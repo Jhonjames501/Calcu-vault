@@ -101,8 +101,17 @@ function handleFileUpload(event) {
 
 function loadVaultData() {
     let photos = JSON.parse(localStorage.getItem('calcu_photos') || '[]');
-    let total = photos.length + 12;
+    let videos = JSON.parse(localStorage.getItem('calcu_videos') || '[]');
+    let notes = JSON.parse(localStorage.getItem('calcu_notes') || '[]');
+    let total = photos.length + videos.length + notes.length + 12;
     document.getElementById('vault-counter').innerText = `${total} ELEMENTOS BLOQUEADA`;
+}
+
+function lockVault() {
+    failedAttempts = 0;
+    localStorage.setItem('calcu_failed', '0');
+    switchScreen('calc');
+    clearCalc();
 }
 
 async function captureIntruder() {
