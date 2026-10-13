@@ -148,18 +148,17 @@ function closeMediaModal() {
 }
 
 function downloadCurrentMedia() {
-    // Método directo de descarga por enlace virtual compatible con Android WebView
-    const a = document.createElement('a');
-    a.href = activeModalItem.data;
-    a.download = activeModalItem.type === 'photo' ? 'CalcuVault_Foto.png' : 'CalcuVault_Video.mp4';
-    
-    // Forzar la creación y el clic de forma limpia en entornos móviles
-    document.body.appendChild(a);
-    a.click();
-    
-    setTimeout(() => {
+    // Redirige o abre el archivo multimedia en el navegador externo para habilitar la descarga nativa
+    const newWindow = window.open(activeModalItem.data, '_blank');
+    if (!newWindow) {
+        const a = document.createElement('a');
+        a.href = activeModalItem.data;
+        a.target = '_blank';
+        a.download = activeModalItem.type === 'photo' ? 'CalcuVault_Foto.png' : 'CalcuVault_Video.mp4';
+        document.body.appendChild(a);
+        a.click();
         document.body.removeChild(a);
-    }, 100);
+    }
 }
 
 function deleteCurrentMedia() {
