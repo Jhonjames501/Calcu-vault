@@ -140,11 +140,6 @@ body {
     font-weight: 700;
     letter-spacing: 1px;
     margin-bottom: 4px;
-    transition: opacity 0.2s;
-}
-
-.gallery-title:active {
-    opacity: 0.7;
 }
 
 .gallery-subtitle {
@@ -186,6 +181,7 @@ body {
     flex: 1;
     overflow-y: auto;
     align-content: start;
+    padding-bottom: 10px;
 }
 
 .media-item {
@@ -198,7 +194,14 @@ body {
     align-items: center;
     justify-content: center;
     border: 1px solid rgba(255,255,255,0.05);
-    filter: blur(2px);
+    cursor: pointer;
+}
+
+.media-item img, .media-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(4px); /* Borroso en la galería como el diseño original */
 }
 
 .media-item.add-btn {
@@ -207,7 +210,6 @@ body {
     color: var(--accent-blue);
     font-size: 24px;
     filter: none;
-    cursor: pointer;
 }
 
 .lock-overlay {
@@ -215,6 +217,20 @@ body {
     color: var(--accent-blue);
     font-size: 14px;
     filter: drop-shadow(0 0 6px rgba(59,130,246,0.9));
+}
+
+.back-calc-btn {
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid var(--accent-blue);
+    color: var(--accent-blue);
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    margin: 8px 0;
+    width: 100%;
 }
 
 .gallery-footer {
@@ -225,7 +241,50 @@ body {
     text-align: center;
     font-size: 10px;
     color: var(--accent-blue);
-    margin-top: 10px;
+}
+
+/* Modal Visor de Medios */
+.modal {
+    display: none;
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.92);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 330px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: -35px;
+    right: 0;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+#modal-body-container img, #modal-body-container video {
+    width: 100%;
+    max-height: 450px;
+    object-fit: contain;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
 }
 
 .intruder-header {
@@ -296,6 +355,8 @@ body {
     font-weight: 600;
     cursor: pointer;
     text-align: center;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .action-btn.outline {
