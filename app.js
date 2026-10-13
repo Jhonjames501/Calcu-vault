@@ -121,6 +121,7 @@ function loadVaultData() {
     let notes = JSON.parse(localStorage.getItem('calcu_notes') || '[]');
     notes.forEach((note, idx) => {
         let card = document.createElement('div');
+        card.className.style = '';
         card.className = 'note-card';
         card.innerHTML = `<h4>${note.title}</h4><p>${note.content}</p><button class="note-delete" onclick="deleteNote(${idx})">Eliminar</button>`;
         notesContainer.appendChild(card);
@@ -147,19 +148,18 @@ function closeMediaModal() {
     document.getElementById('mediaModal').style.display = 'none';
 }
 
-// Método optimizado para WebView / APK
+// Método adaptado para WebView: Muestra un enlace directo de descarga interactivo dentro del modal
 function downloadCurrentMedia() {
-    const downloadLink = document.createElement('a');
-    downloadLink.href = activeModalItem.data;
-    downloadLink.download = activeModalItem.type === 'photo' ? `CalcuVault_${Date.now()}.png` : `CalcuVault_${Date.now()}.mp4`;
-    downloadLink.target = '_self';
+    const container = document.getElementById('modal-body-container');
+    const fileName = activeModalItem.type === 'photo' ? 'CalcuVault_Foto.png' : 'CalcuVault_Video.mp4';
     
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    
-    setTimeout(() => {
-        document.body.removeChild(downloadLink);
-    }, 100);
+    container.innerHTML = `
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:300px; text-align:center; padding:20px;">
+            <p style="color:#fff; margin-bottom:15px; font-size:14px;">Toca el botón de abajo para guardar tu archivo:</p>
+            <a href="${activeModalItem.data}" download="${fileName}" class="action-btn solid" style="display:block; text-align:center; line-height:normal; text-decoration:none; margin-bottom:15px;">📥 Guardar Archivo en el Celular</a>
+            <p style="color:#9ca3af; font-size:11px;">(Si no descarga automáticamente, mantén presionada la imagen anterior o usa el botón de descarga)</p>
+        </div>
+    `;
 }
 
 function deleteCurrentMedia() {
