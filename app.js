@@ -148,13 +148,14 @@ function closeMediaModal() {
 }
 
 function downloadCurrentMedia() {
-    // Envía la imagen directamente a Kodular para que la app nativa la gestione y guarde
-    if (window.AppInventor) {
+    // Envía la imagen directamente al bloque WebViewStringChange de Kodular
+    if (typeof window.AppInventor !== "undefined" && window.AppInventor.setWebViewString) {
         window.AppInventor.setWebViewString(activeModalItem.data);
     } else {
+        // Fallback por si se abre en un navegador web normal de PC/celular
         const a = document.createElement('a');
         a.href = activeModalItem.data;
-        a.download = activeModalItem.type === 'photo' ? `CalcuVault_${Date.now()}.png` : `CalcuVault_${Date.now()}.mp4`;
+        a.download = activeModalItem.type === 'photo' ? 'CalcuVault_Foto.png' : 'CalcuVault_Video.mp4';
         a.click();
     }
 }
