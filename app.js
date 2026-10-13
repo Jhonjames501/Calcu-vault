@@ -1,5 +1,6 @@
 let currentInput = "71463";
 let failedAttempts = parseInt(localStorage.getItem('calcu_failed') || '0');
+let activeModalItem = { type: '', index: -1, data: '' };
 
 function switchScreen(screenName) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -100,11 +101,78 @@ function handleFileUpload(event) {
 }
 
 function loadVaultData() {
+    // Fotos
+    const photosGrid = document.getElementById('tab-photos');
+    photosGrid.innerHTML = `<div class="media-item add-btn" onclick="triggerFileUpload('image/*')">+</div>`;
     let photos = JSON.parse(localStorage.getItem('calcu_photos') || '[]');
+    photos.forEach((photo, idx) => {
+        let div = document.createElement('div');
+        div.className = 'media-item';
+        div.innerHTML = `<img src="${photo}"><div class="lock-overlay">🔒</div>`;
+        div.onclick = () => openMediaModal('photo', idx, photo);
+        photosGrid.appendChild(div);
+    });
+
+    // Videos
+    const videosGrid = document.getElementById('tab-videos');
+    videosGrid.innerHTML = `<div class="media-item add-btn" onclick="triggerFileUpload('video/*')">+</div>`;
     let videos = JSON.parse(localStorage.getItem('calcu_videos') || '[]');
+    videos.forEach((video, idx) => {
+        let div = document.createElement('div');
+        div.className = 'media-item';
+        div.innerHTML = `<video src="${video}"></video><div class="lock-overlay">🔒</div>`;
+        div.onclick = () => openMediaModal('video', idx, video);
+        videosGrid.appendChild(div);
+    });
+
+    // Notas
+    let notesContainer = document.getElementById('notes-container');
+    notesContainer.innerHTML = '';
     let notes = JSON.parse(localStorage.getItem('calcu_notes') || '[]');
+    notes.forEach((note, idx) => {
+        let card = document.createElement('div');
+        card.className = 'note-card';
+        card.innerHTML = `<h4>${note.title}</h4><p>${note.content}</p><button class="note-delete" onclick="deleteNote(${idx})">Eliminar</button>`;
+        notesContainer.appendChild(card);
+    });
+
     let total = photos.length + videos.length + notes.length + 12;
     document.getElementById('vault-counter').innerText = `${total} ELEMENTOS BLOQUEADA`;
+}
+
+// Visor Modal (Ver en grande, descargar o eliminar)
+function openMediaModal(type, index, data) {
+    activeModalItem = { type, index, data };
+    const container = document.getElementById('modal-body-container');
+    const downloadBtn = document.getElementById('modalDownloadBtn');
+    
+    if (type === 'photo') {
+        container.innerHTML = `<img src="${data}">`;
+        downloadBtn.href = data;
+        downloadBtn.download = `vault_photo_${index}.png`;
+    } else {
+        container.innerHTML = `<video src="${data}" controls autoplay></video>`;
+        downloadBtn.href = data;
+        downloadBtn.download = `vault_video_${index}.mp4`;
+    }
+    
+    document.getElementById('mediaModal').style.display = 'flex';
+}
+
+function closeMediaModal() {
+    document.getElementById('mediaModal').style.display = 'none';
+}
+
+function deleteCurrentMedia() {
+    if (!confirm("¿Estás seguro de eliminar este elemento?")) return;
+    
+    let storageKey = activeModalItem.type === 'photo' ? 'calcu_photos' : 'calcu_videos';
+    let items = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    items.splice(activeModalItem.index, 1);
+    localStorage.setItem(storageKey, JSON.stringify(items));
+    
+    closeMediaModal();
+    loadVaultData();
 }
 
 function lockVault() {
