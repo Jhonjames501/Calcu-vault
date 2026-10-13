@@ -147,13 +147,26 @@ function closeMediaModal() {
     document.getElementById('mediaModal').style.display = 'none';
 }
 
+// Método optimizado para APK / WebView que abre la imagen en ventana nueva para guardarla
 function downloadCurrentMedia() {
-    const a = document.createElement('a');
-    a.href = activeModalItem.data;
-    a.download = activeModalItem.type === 'photo' ? `vault_photo_${Date.now()}.png` : `vault_video_${Date.now()}.mp4`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    try {
+        let w = window.open('');
+        w.document.write(`
+            <html>
+                <head><title>Guardar Imagen</title></head>
+                <body style="margin:0; background:#000; display:flex; justify-content:center; align-items:center; height:100vh;">
+                    <img src="${activeModalItem.data}" style="max-width:100%; max-height:100%; object-fit:contain;" />
+                </body>
+            </html>
+        `);
+        w.document.close();
+    } catch (e) {
+        // Fallback si el WebView bloquea la ventana nueva
+        const a = document.createElement('a');
+        a.href = activeModalItem.data;
+        a.target = '_blank';
+        a.click();
+    }
 }
 
 function deleteCurrentMedia() {
