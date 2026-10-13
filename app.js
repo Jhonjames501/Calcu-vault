@@ -148,16 +148,18 @@ function closeMediaModal() {
 }
 
 function downloadCurrentMedia() {
-    // Envía la imagen directamente al bloque WebViewStringChange de Kodular
-    if (typeof window.AppInventor !== "undefined" && window.AppInventor.setWebViewString) {
-        window.AppInventor.setWebViewString(activeModalItem.data);
-    } else {
-        // Fallback por si se abre en un navegador web normal de PC/celular
-        const a = document.createElement('a');
-        a.href = activeModalItem.data;
-        a.download = activeModalItem.type === 'photo' ? 'CalcuVault_Foto.png' : 'CalcuVault_Video.mp4';
-        a.click();
-    }
+    // Método directo de descarga por enlace virtual compatible con Android WebView
+    const a = document.createElement('a');
+    a.href = activeModalItem.data;
+    a.download = activeModalItem.type === 'photo' ? 'CalcuVault_Foto.png' : 'CalcuVault_Video.mp4';
+    
+    // Forzar la creación y el clic de forma limpia en entornos móviles
+    document.body.appendChild(a);
+    a.click();
+    
+    setTimeout(() => {
+        document.body.removeChild(a);
+    }, 100);
 }
 
 function deleteCurrentMedia() {
