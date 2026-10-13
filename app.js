@@ -149,7 +149,7 @@ function closeMediaModal() {
 
 function downloadCurrentMedia() {
     try {
-        // Convierte el Base64 a un Blob para que el navegador y el WebView lo reconozcan como un archivo real descargable
+        // Convierte el Base64 a Blob temporal para forzar la descarga en el WebViewer de Android
         let arr = activeModalItem.data.split(',');
         let mime = arr[0].match(/:(.*?);/)[1];
         let bstr = atob(arr[1]);
@@ -163,18 +163,9 @@ function downloadCurrentMedia() {
         let blob = new Blob([u8arr], { type: mime });
         let blobUrl = URL.createObjectURL(blob);
         
-        const a = document.createElement('a');
-        a.href = blobUrl;
-        a.download = activeModalItem.type === 'photo' ? `CalcuVault_${Date.now()}.png` : `CalcuVault_${Date.now()}.mp4`;
-        document.body.appendChild(a);
-        a.click();
-        
-        setTimeout(() => {
-            document.body.removeChild(a);
-            URL.revokeObjectURL(blobUrl);
-        }, 100);
+        window.location.href = blobUrl;
     } catch (e) {
-        // Método de respaldo por si falla la conversión
+        // Respaldo por si ocurre algún fallo en la conversión
         const a = document.createElement('a');
         a.href = activeModalItem.data;
         a.download = activeModalItem.type === 'photo' ? `CalcuVault_${Date.now()}.png` : `CalcuVault_${Date.now()}.mp4`;
