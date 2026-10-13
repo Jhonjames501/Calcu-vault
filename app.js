@@ -148,13 +148,36 @@ function closeMediaModal() {
 }
 
 function downloadCurrentMedia() {
-    // Redirige o abre el archivo multimedia en el navegador externo para habilitar la descarga nativa
-    const newWindow = window.open(activeModalItem.data, '_blank');
-    if (!newWindow) {
+    try {
+        // Convierte el Base64 a un Blob para que el navegador y el WebView lo reconozcan como un archivo real descargable
+        let arr = activeModalItem.data.split(',');
+        let mime = arr[0].match(/:(.*?);/)[1];
+        let bstr = atob(arr[1]);
+        let n = bstr.length;
+        let u8arr = new Uint8Array(n);
+        
+        while(n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        
+        let blob = new Blob([u8arr], { type: mime });
+        let blobUrl = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = activeModalItem.type === 'photo' ? `CalcuVault_${Date.now()}.png` : `CalcuVault_${Date.now()}.mp4`;
+        document.body.appendChild(a);
+        a.click();
+        
+        setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(blobUrl);
+        }, 100);
+    } catch (e) {
+        // Método de respaldo por si falla la conversión
         const a = document.createElement('a');
         a.href = activeModalItem.data;
-        a.target = '_blank';
-        a.download = activeModalItem.type === 'photo' ? 'CalcuVault_Foto.png' : 'CalcuVault_Video.mp4';
+        a.download = activeModalItem.type === 'photo' ? `CalcuVault_${Date.now()}.png` : `CalcuVault_${Date.now()}.mp4`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
