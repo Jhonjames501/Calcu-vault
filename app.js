@@ -147,9 +147,17 @@ function closeMediaModal() {
     document.getElementById('mediaModal').style.display = 'none';
 }
 
-// Solución definitiva para WebView: Muestra un aviso claro para guardar la imagen tocándola
 function downloadCurrentMedia() {
-    alert("Para guardar esta imagen en tu celular, mantén presionada la foto en pantalla y selecciona 'Descargar imagen' o 'Guardar en galería'.");
+    const container = document.getElementById('modal-body-container');
+    const fileName = activeModalItem.type === 'photo' ? `CalcuVault_${Date.now()}.png` : `CalcuVault_${Date.now()}.mp4`;
+    
+    container.innerHTML = `
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:320px; text-align:center; padding:20px;">
+            <p style="color:#fff; margin-bottom:20px; font-size:14px; font-weight:600;">Listo para descargar:</p>
+            <a href="${activeModalItem.data}" download="${fileName}" class="action-btn solid" style="display:block; width:100%; padding:15px; background:#3b82f6; color:#ffffff; text-decoration:none; border-radius:14px; font-weight:600; font-size:14px; box-shadow:0 4px 15px rgba(59,130,246,0.4);">📥 Descargar en el Celular</a>
+            <p style="color:#9ca3af; font-size:11px; margin-top:20px;">(Toca el botón azul de arriba para iniciar la descarga)</p>
+        </div>
+    `;
 }
 
 function deleteCurrentMedia() {
