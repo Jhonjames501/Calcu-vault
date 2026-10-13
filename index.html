@@ -22,58 +22,28 @@
             padding: 20px;
         }
 
-        /* Contenedor del escudo corporativo en código */
         .splash-brand-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
         }
 
-        .splash-shield-icon {
-            width: 110px;
-            height: 130px;
-            background: linear-gradient(145deg, #12151c, #090b10);
-            border: 2px solid rgba(59, 130, 246, 0.6);
-            border-radius: 20px 20px 60px 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: 0 0 35px rgba(0, 212, 255, 0.35), inset 0 0 15px rgba(0, 212, 255, 0.2);
-            margin-bottom: 22px;
-        }
-
-        /* Candado central del escudo */
-        .splash-lock {
-            width: 28px;
-            height: 24px;
-            border: 3px solid #00d4ff;
-            border-radius: 6px;
-            position: relative;
-            box-shadow: 0 0 10px #00d4ff;
-        }
-
-        .splash-lock::before {
-            content: '';
-            position: absolute;
-            top: -14px;
-            left: 5px;
-            width: 14px;
-            height: 14px;
-            border: 3px solid #00d4ff;
-            border-bottom: none;
-            border-radius: 10px 10px 0 0;
+        /* Contenedor gráfico optimizado para APK */
+        .splash-shield-graphic {
+            width: 130px;
+            height: 150px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 25px rgba(0, 212, 255, 0.45));
         }
 
         .splash-title-text {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 300;
-            letter-spacing: 6px;
+            letter-spacing: 5px;
             color: #ffffff;
             text-shadow: 0 0 10px rgba(255,255,255,0.4);
-            margin-left: 6px; /* Compensar letter-spacing */
         }
 
         .splash-counter {
@@ -119,12 +89,32 @@
 </head>
 <body>
 
-    <!-- PANTALLA DE SPLASH (4 Segundos Exactos con el Escudo Creado) -->
+    <!-- PANTALLA DE SPLASH CON ESCUDO INCORPORADO EN VECTOR (Sin depender de archivos externos) -->
     <div id="splash-screen">
         <div class="splash-brand-container">
-            <div class="splash-shield-icon">
-                <div class="splash-lock"></div>
-            </div>
+            <!-- Escudo vectorial idéntico a tu referencia con brillo neón -->
+            <svg class="splash-shield-graphic" viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#151922" />
+                        <stop offset="100%" stop-color="#05070a" />
+                    </linearGradient>
+                    <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="6" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
+                </defs>
+                <!-- Brillo de fondo azul neón -->
+                <path d="M100 10 C140 10 180 25 180 70 C180 140 130 190 100 220 C70 190 20 140 20 70 C20 25 60 10 100 10 Z" fill="none" stroke="#00d4ff" stroke-width="3" filter="url(#neonGlow)" opacity="0.8"/>
+                <!-- Cuerpo principal del escudo -->
+                <path d="M100 15 C138 15 175 28 175 70 C175 135 128 182 100 210 C72 182 25 135 25 70 C25 28 62 15 100 15 Z" fill="url(#shieldGrad)" stroke="#1e293b" stroke-width="4"/>
+                <!-- Candado corporativo central -->
+                <g transform="translate(78, 85)">
+                    <rect x="6" y="22" width="32" height="26" rx="5" fill="none" stroke="#00d4ff" stroke-width="4" filter="url(#neonGlow)"/>
+                    <path d="M14 22 V14 C14 7 30 7 30 14 V22" fill="none" stroke="#00d4ff" stroke-width="4" stroke-linecap="round" filter="url(#neonGlow)"/>
+                    <circle cx="22" cy="33" r="3" fill="#00d4ff"/>
+                </g>
+            </svg>
             <div class="splash-title-text">CALCU VAULT</div>
         </div>
 
