@@ -148,31 +148,16 @@ function closeMediaModal() {
 }
 
 function downloadCurrentMedia() {
-    try {
-        // Convierte el Base64 a Blob temporal para forzar la descarga en el WebViewer de Android
-        let arr = activeModalItem.data.split(',');
-        let mime = arr[0].match(/:(.*?);/)[1];
-        let bstr = atob(arr[1]);
-        let n = bstr.length;
-        let u8arr = new Uint8Array(n);
-        
-        while(n--) {
-            u8arr[n] = bstr.charCodeAt(n);
-        }
-        
-        let blob = new Blob([u8arr], { type: mime });
-        let blobUrl = URL.createObjectURL(blob);
-        
-        window.location.href = blobUrl;
-    } catch (e) {
-        // Respaldo por si ocurre algún fallo en la conversión
-        const a = document.createElement('a');
-        a.href = activeModalItem.data;
-        a.download = activeModalItem.type === 'photo' ? `CalcuVault_${Date.now()}.png` : `CalcuVault_${Date.now()}.mp4`;
-        document.body.appendChild(a);
-        a.click();
+    // Forzamos la creación de un enlace con atributo download y un click simulado directo al DOM
+    const a = document.createElement('a');
+    a.href = activeModalItem.data;
+    a.download = activeModalItem.type === 'photo' ? 'CalcuVault_Foto.png' : 'CalcuVault_Video.mp4';
+    a.target = '_self';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
         document.body.removeChild(a);
-    }
+    }, 200);
 }
 
 function deleteCurrentMedia() {
