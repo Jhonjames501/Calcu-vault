@@ -1,0 +1,338 @@
+:root {
+    --bg-color: #050507;
+    --card-color: #15151f;
+    --accent-blue: #3b82f6;
+    --accent-red: #ef4444;
+    --text-main: #ffffff;
+    --text-muted: #9ca3af;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.iphone-frame {
+    width: 100%;
+    max-width: 390px;
+    height: 100vh;
+    max-height: 840px;
+    background-color: var(--bg-color);
+    border: 10px solid #1f1f23;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.9);
+}
+
+.status-bar {
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    flex-shrink: 0;
+}
+
+.screen {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* Calculadora Estilo Neón */
+.calc-mode-title {
+    text-align: center;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-blue);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.calc-display {
+    font-size: 58px;
+    font-weight: 300;
+    text-align: right;
+    color: var(--accent-blue);
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.7);
+    margin-bottom: 25px;
+    word-break: break-all;
+}
+
+.calc-keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: auto;
+    margin-bottom: 20px;
+}
+
+.btn {
+    background-color: #15151f;
+    color: var(--text-main);
+    border: none;
+    border-radius: 50%;
+    width: 68px;
+    height: 68px;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0 auto;
+    transition: transform 0.1s;
+}
+
+.btn:active {
+    transform: scale(0.92);
+}
+
+.btn.ac {
+    background-color: var(--accent-blue);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+.btn.operator {
+    color: var(--accent-blue);
+    font-size: 20px;
+}
+
+.btn.equals {
+    grid-column: span 2;
+    width: 100%;
+    border-radius: 35px;
+    background-color: var(--accent-blue);
+    color: white;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+    font-size: 26px;
+}
+
+.calc-footer {
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+/* Galería Privada */
+.gallery-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.gallery-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.gallery-subtitle {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.tabs {
+    display: flex;
+    background: #111118;
+    border-radius: 20px;
+    padding: 3px;
+    margin-bottom: 15px;
+}
+
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-radius: 16px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+}
+
+.tab.active {
+    background: var(--accent-blue);
+    color: white;
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+}
+
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    flex: 1;
+    overflow-y: auto;
+    align-content: start;
+}
+
+.media-item {
+    aspect-ratio: 1;
+    background: var(--card-color);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,0.05);
+    filter: blur(2px);
+}
+
+.media-item.add-btn {
+    border: 2px dashed var(--accent-blue);
+    background: rgba(59, 130, 246, 0.05);
+    color: var(--accent-blue);
+    font-size: 24px;
+    filter: none;
+    cursor: pointer;
+}
+
+.lock-overlay {
+    position: absolute;
+    color: var(--accent-blue);
+    font-size: 14px;
+    filter: drop-shadow(0 0 6px rgba(59,130,246,0.9));
+}
+
+.gallery-footer {
+    background: #111118;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+    font-size: 10px;
+    color: var(--accent-blue);
+    margin-top: 10px;
+}
+
+/* Alerta de Intruso */
+.intruder-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.intruder-title {
+    color: var(--accent-red);
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.intruder-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.intruder-photo-container {
+    width: 100%;
+    height: 250px;
+    background: #000;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    margin-bottom: 20px;
+}
+
+.intruder-photo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.intruder-info-box {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.intruder-info-box h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.intruder-info-box p {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.intruder-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.action-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+}
+
+.action-btn.outline {
+    background: transparent;
+    border: 1px solid var(--accent-blue);
+    color: var(--accent-blue);
+}
+
+.action-btn.solid {
+    background: var(--accent-blue);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.intruder-footer-note {
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 15px;
+}
+
+.notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    overflow-y: auto;
+}
