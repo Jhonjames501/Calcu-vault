@@ -1,5 +1,4 @@
 let currentInput = "71463";
-let failedAttempts = parseInt(localStorage.getItem('calcu_failed') || '0');
 let activeModalItem = { type: '', index: -1, data: '' };
 
 function switchScreen(screenName) {
@@ -7,7 +6,6 @@ function switchScreen(screenName) {
     document.getElementById(`screen-${screenName}`).classList.add('active');
     
     if (screenName === 'gallery') loadVaultData();
-    if (screenName === 'intruder') captureIntruder();
 }
 
 function updateDisplay() {
@@ -40,8 +38,6 @@ function clearCalc() {
 function calculate() {
     let cleanVal = currentInput.trim();
     if (cleanVal === "71463") {
-        failedAttempts = 0;
-        localStorage.setItem('calcu_failed', '0');
         switchScreen('gallery');
         return;
     } else if (cleanVal === "999999") {
@@ -55,15 +51,9 @@ function calculate() {
         currentInput = String(result);
         updateDisplay();
     } catch (e) {
-        failedAttempts++;
-        localStorage.setItem('calcu_failed', failedAttempts);
-        if (failedAttempts >= 3) {
-            switchScreen('intruder');
-        } else {
-            currentInput = "Error";
-            updateDisplay();
-            setTimeout(clearCalc, 1000);
-        }
+        currentInput = "Error";
+        updateDisplay();
+        setTimeout(clearCalc, 1000);
     }
 }
 
@@ -140,20 +130,14 @@ function loadVaultData() {
     document.getElementById('vault-counter').innerText = `${total} ELEMENTOS BLOQUEADA`;
 }
 
-// Visor Modal (Ver en grande, descargar o eliminar)
 function openMediaModal(type, index, data) {
     activeModalItem = { type, index, data };
     const container = document.getElementById('modal-body-container');
-    const downloadBtn = document.getElementById('modalDownloadBtn');
     
     if (type === 'photo') {
         container.innerHTML = `<img src="${data}">`;
-        downloadBtn.href = data;
-        downloadBtn.download = `vault_photo_${index}.png`;
     } else {
         container.innerHTML = `<video src="${data}" controls autoplay></video>`;
-        downloadBtn.href = data;
-        downloadBtn.download = `vault_video_${index}.mp4`;
     }
     
     document.getElementById('mediaModal').style.display = 'flex';
@@ -161,6 +145,15 @@ function openMediaModal(type, index, data) {
 
 function closeMediaModal() {
     document.getElementById('mediaModal').style.display = 'none';
+}
+
+function downloadCurrentMedia() {
+    const a = document.createElement('a');
+    a.href = activeModalItem.data;
+    a.download = activeModalItem.type === 'photo' ? `vault_photo_${Date.now()}.png` : `vault_video_${Date.now()}.mp4`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 }
 
 function deleteCurrentMedia() {
@@ -176,39 +169,6 @@ function deleteCurrentMedia() {
 }
 
 function lockVault() {
-    failedAttempts = 0;
-    localStorage.setItem('calcu_failed', '0');
-    switchScreen('calc');
-    clearCalc();
-}
-
-async function captureIntruder() {
-    const video = document.getElementById('webcam');
-    const canvas = document.getElementById('snapshot-canvas');
-    const displayImg = document.getElementById('intruder-photo-display');
-
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
-        video.srcObject = stream;
-        setTimeout(() => {
-            canvas.width = video.videoWidth || 300;
-            canvas.height = video.videoHeight || 400;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-            displayImg.src = canvas.toDataURL('image/png');
-            stream.getTracks().forEach(t => t.stop());
-        }, 1000);
-    } catch (e) {
-        console.log("Cámara no disponible, usando imagen de respaldo");
-    }
-}
-
-function showIntruderDetails() {
-    alert("DETALLES DE INTRUSIÓN:\n• Hora: 23:09\n• Ubicación: Lima, Perú\n• Intentos fallidos: " + (failedAttempts || 1));
-}
-
-function lockDevice() {
-    failedAttempts = 0;
-    localStorage.setItem('calcu_failed', '0');
     switchScreen('calc');
     clearCalc();
 }
