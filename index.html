@@ -6,203 +6,90 @@
     <title>CALCU VAULT</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #05080f;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.6s ease;
-            padding: 20px;
-        }
-
-        .splash-brand-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .splash-shield-graphic {
-            width: 150px;
-            height: 165px;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 0 25px rgba(0, 212, 255, 0.45));
-        }
-
-        .splash-title-text {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            font-size: 24px;
-            font-weight: 300;
-            letter-spacing: 5px;
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(255,255,255,0.4);
-        }
-
-        .splash-counter {
-            font-size: 28px;
-            font-weight: 300;
-            color: #ffffff;
-            margin-bottom: 15px;
-            letter-spacing: 2px;
-        }
-
-        .splash-progress-container {
-            width: 80%;
-            max-width: 260px;
-            height: 6px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-
-        .splash-progress-bar {
-            width: 0%;
-            height: 100%;
-            background-color: #00d4ff;
-            box-shadow: 0 0 10px #00d4ff;
-            transition: width 0.04s linear;
-        }
-
-        .splash-text {
-            font-size: 11px;
-            letter-spacing: 3px;
-            color: #8a99ad;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        #app {
-            display: none;
-            width: 100%;
-            height: 100%;
-        }
+        #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #05080f; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.6s ease; padding: 20px; }
+       .splash-brand-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 25px; }
+       .splash-shield-graphic { width: 150px; height: 165px; margin-bottom: 15px; filter: drop-shadow(0 0 25px rgba(0, 212, 255, 0.45)); }
+       .splash-title-text { font-family: -apple-system, sans-serif; font-size: 24px; font-weight: 300; letter-spacing: 5px; color: #ffffff; }
+       .splash-counter { font-size: 28px; font-weight: 300; color: #ffffff; margin-bottom: 15px; letter-spacing: 2px; }
+       .splash-progress-container { width: 80%; max-width: 260px; height: 6px; background-color: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; margin-bottom: 15px; }
+       .splash-progress-bar { width: 0%; height: 100%; background-color: #00d4ff; box-shadow: 0 0 10px #00d4ff; transition: width 0.04s linear; }
+       .splash-text { font-size: 11px; letter-spacing: 3px; color: #8a99ad; text-transform: uppercase; font-weight: 600; }
+        #app { display: none; width: 100%; height: 100%; }
     </style>
 </head>
 <body>
-
-    <!-- PANTALLA DE SPLASH VECTORIAL (4 Segundos Exactos) -->
     <div id="splash-screen">
         <div class="splash-brand-container">
             <svg class="splash-shield-graphic" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#121620" />
-                        <stop offset="100%" stop-color="#040608" />
-                    </linearGradient>
-                    <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feGaussianBlur stdDeviation="6" result="blur" />
-                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                    </filter>
-                </defs>
+                <defs><linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#121620"/><stop offset="100%" stop-color="#040608"/></linearGradient><filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter></defs>
                 <path d="M100 15 C135 15 175 25 175 75 C175 130 135 165 100 185 C65 165 25 130 25 75 C25 25 65 15 100 15 Z" fill="none" stroke="#00d4ff" stroke-width="3" filter="url(#neonGlow)" opacity="0.85"/>
                 <path d="M100 20 C132 20 170 28 170 75 C170 125 132 158 100 178 C68 158 30 125 30 75 C30 28 68 20 100 20 Z" fill="url(#shieldGrad)" stroke="#1a2332" stroke-width="4"/>
-                <g transform="translate(79, 72)">
-                    <rect x="4" y="22" width="34" height="28" rx="6" fill="none" stroke="#00d4ff" stroke-width="3.5" filter="url(#neonGlow)"/>
-                    <path d="M13 22 V14 C13 6 29 6 29 14 V22" fill="none" stroke="#00d4ff" stroke-width="3.5" stroke-linecap="round" filter="url(#neonGlow)"/>
-                    <circle cx="21" cy="35" r="3.5" fill="#00d4ff"/>
-                </g>
+                <g transform="translate(79, 72)"><rect x="4" y="22" width="34" height="28" rx="6" fill="none" stroke="#00d4ff" stroke-width="3.5" filter="url(#neonGlow)"/><path d="M13 22 V14 C13 6 29 6 29 14 V22" fill="none" stroke="#00d4ff" stroke-width="3.5" stroke-linecap="round" filter="url(#neonGlow)"/><circle cx="21" cy="35" r="3.5" fill="#00d4ff"/></g>
             </svg>
             <div class="splash-title-text">CALCU VAULT</div>
         </div>
-
         <div class="splash-counter" id="splash-counter">1%</div>
-        <div class="splash-progress-container">
-            <div class="splash-progress-bar" id="splash-progress-bar"></div>
-        </div>
+        <div class="splash-progress-container"><div class="splash-progress-bar" id="splash-progress-bar"></div></div>
         <div class="splash-text">CARGANDO SISTEMA SEGURO</div>
     </div>
 
-    <!-- CONTENEDOR PRINCIPAL DE LA APP -->
     <div id="app">
         <div class="iphone-frame">
-
-            <!-- ================= PANTALLA 1: MODO CALCULADORA ================= -->
             <div id="screen-calc" class="screen active">
                 <div class="calc-mode-title">MODO CALCULADORA</div>
-                
                 <div class="calc-display" id="display">71463</div>
-
                 <div class="calc-keypad">
                     <button class="btn ac" onclick="clearCalc()">AC</button>
                     <button class="btn operator" onclick="appendOperator('⌫')">⌫</button>
                     <button class="btn operator" onclick="appendOperator('÷')">÷</button>
                     <button class="btn operator" onclick="appendOperator('×')">×</button>
-
                     <button class="btn" onclick="appendNumber('7')">7</button>
                     <button class="btn" onclick="appendNumber('8')">8</button>
                     <button class="btn" onclick="appendNumber('9')">9</button>
                     <button class="btn operator" onclick="appendOperator('-')">-</button>
-
                     <button class="btn" onclick="appendNumber('4')">4</button>
                     <button class="btn" onclick="appendNumber('5')">5</button>
                     <button class="btn" onclick="appendNumber('6')">6</button>
                     <button class="btn operator" onclick="appendOperator('+')">+</button>
-
                     <button class="btn" onclick="appendNumber('1')">1</button>
                     <button class="btn" onclick="appendNumber('2')">2</button>
                     <button class="btn" onclick="appendNumber('3')">3</button>
                     <button class="btn equals" onclick="calculate()">=</button>
-
                     <button class="btn" onclick="appendNumber('0')" style="grid-column: span 2; width: 100%; border-radius: 35px;">0</button>
                     <button class="btn" onclick="appendNumber('.')">.</button>
                 </div>
-                
                 <div class="calc-footer">MODO CALCULADORA</div>
             </div>
 
-            <!-- ================= PANTALLA 2: GALERÍA PRIVADA ================= -->
             <div id="screen-gallery" class="screen">
                 <div class="gallery-header">
                     <div class="gallery-title">GALERÍA PRIVADA 🔒</div>
-                    <div class="gallery-subtitle" id="vault-counter">13 ELEMENTOS BLOQUEADA</div>
+                    <div class="gallery-subtitle" id="vault-counter">0 ELEMENTOS BLOQUEADA</div>
                 </div>
-
                 <div class="tabs">
-                    <button class="tab active" onclick="switchTab('photos')">Fotos</button>
-                    <button class="tab" onclick="switchTab('videos')">Videos</button>
-                    <button class="tab" onclick="switchTab('notes')">Notas</button>
+                    <button class="tab active" onclick="switchTab('photos', this)">Fotos</button>
+                    <button class="tab" onclick="switchTab('videos', this)">Videos</button>
+                    <button class="tab" onclick="switchTab('notes', this)">Notas</button>
                 </div>
-
-                <div id="tab-photos" class="media-grid">
-                    <div class="media-item add-btn" onclick="triggerFileUpload('image/*')">+</div>
-                </div>
-
-                <div id="tab-videos" class="media-grid" style="display: none;">
-                    <div class="media-item add-btn" onclick="triggerFileUpload('video/*')">+</div>
-                </div>
-
+                <div id="tab-photos" class="media-grid"><div class="media-item add-btn" onclick="triggerFileUpload('image/*')">+</div></div>
+                <div id="tab-videos" class="media-grid" style="display: none;"><div class="media-item add-btn" onclick="triggerFileUpload('video/*')">+</div></div>
                 <div id="tab-notes" class="notes-list" style="display: none;">
                     <button class="action-btn solid" onclick="addNewNote()" style="padding:10px; font-size:12px;">+ Nueva Nota</button>
                     <div id="notes-container"></div>
                 </div>
-
                 <input type="file" id="fileInput" style="display: none;" onchange="handleFileUpload(event)">
-
                 <button class="back-calc-btn" onclick="lockVault()">⬅ Volver a Calculadora</button>
-
-                <div class="gallery-footer">
-                    🔒 Bóveda protegida • Cifrado de Extremo a Extremo
-                </div>
+                <div class="gallery-footer">🔒 Bóveda protegida • Cifrado de Extremo a Extremo</div>
             </div>
-
         </div>
     </div>
 
-    <!-- MODAL VISOR DE MEDIOS -->
     <div id="mediaModal" class="modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeMediaModal()">&times;</span>
             <div id="modal-body-container"></div>
             <div class="modal-actions">
-                <button class="action-btn solid" onclick="downloadCurrentMedia()">Descargar / Guardar</button>
+                <button class="action-btn solid" onclick="downloadCurrentMedia()">⬇️ Guardar en Galería</button>
                 <button class="action-btn outline" onclick="deleteCurrentMedia()" style="border-color:var(--accent-red); color:var(--accent-red);">Eliminar</button>
             </div>
         </div>
@@ -216,12 +103,10 @@
             const progressBar = document.getElementById("splash-progress-bar");
             const splashScreen = document.getElementById("splash-screen");
             const appContainer = document.getElementById("app");
-
             const interval = setInterval(function() {
                 currentPercent++;
                 counterElem.innerText = currentPercent + "%";
                 progressBar.style.width = currentPercent + "%";
-
                 if (currentPercent >= 100) {
                     clearInterval(interval);
                     splashScreen.style.opacity = "0";
