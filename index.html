@@ -5,114 +5,193 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CALCU VAULT</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos específicos para la Pantalla de Splash */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #05080f;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease;
+            padding: 20px;
+        }
+
+        .splash-logo {
+            width: 220px;
+            max-width: 70%;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.4));
+        }
+
+        .splash-counter {
+            font-size: 28px;
+            font-weight: 300;
+            color: #ffffff;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .splash-progress-container {
+            width: 80%;
+            max-width: 260px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .splash-progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #00d4ff;
+            box-shadow: 0 0 10px #00d4ff;
+            transition: width 0.04s linear;
+        }
+
+        .splash-text {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: #8a99ad;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Ocultar la app principal inicialmente */
+        #app {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="iphone-frame">
-
-        <!-- ================= PANTALLA 1: MODO CALCULADORA ================= -->
-        <div id="screen-calc" class="screen active">
-            <div class="calc-mode-title">MODO CALCULADORA</div>
-            
-            <div class="calc-display" id="display">71463</div>
-
-            <div class="calc-keypad">
-                <button class="btn ac" onclick="clearCalc()">AC</button>
-                <button class="btn operator" onclick="appendOperator('⌫')">⌫</button>
-                <button class="btn operator" onclick="appendOperator('÷')">÷</button>
-                <button class="btn operator" onclick="appendOperator('×')">×</button>
-
-                <button class="btn" onclick="appendNumber('7')">7</button>
-                <button class="btn" onclick="appendNumber('8')">8</button>
-                <button class="btn" onclick="appendNumber('9')">9</button>
-                <button class="btn operator" onclick="appendOperator('-')">-</button>
-
-                <button class="btn" onclick="appendNumber('4')">4</button>
-                <button class="btn" onclick="appendNumber('5')">5</button>
-                <button class="btn" onclick="appendNumber('6')">6</button>
-                <button class="btn operator" onclick="appendOperator('+')">+</button>
-
-                <button class="btn" onclick="appendNumber('1')">1</button>
-                <button class="btn" onclick="appendNumber('2')">2</button>
-                <button class="btn" onclick="appendNumber('3')">3</button>
-                <button class="btn equals" onclick="calculate()">=</button>
-
-                <button class="btn" onclick="appendNumber('0')" style="grid-column: span 2; width: 100%; border-radius: 35px;">0</button>
-                <button class="btn" onclick="appendNumber('.')">.</button>
-            </div>
-            
-            <div class="calc-footer">MODO CALCULADORA</div>
+    <!-- PANTALLA DE SPLASH (4 Segundos Exactos) -->
+    <div id="splash-screen">
+        <img src="splash.png" alt="Calcu Vault Shield" class="splash-logo">
+        <div class="splash-counter" id="splash-counter">1%</div>
+        <div class="splash-progress-container">
+            <div class="splash-progress-bar" id="splash-progress-bar"></div>
         </div>
-
-        <!-- ================= PANTALLA 2: GALERÍA PRIVADA ================= -->
-        <div id="screen-gallery" class="screen">
-            <div class="gallery-header">
-                <div class="gallery-title">GALERÍA PRIVADA 🔒</div>
-                <div class="gallery-subtitle" id="vault-counter">12 ELEMENTOS BLOQUEADA</div>
-            </div>
-
-            <div class="tabs">
-                <button class="tab active" onclick="switchTab('photos')">Fotos</button>
-                <button class="tab" onclick="switchTab('videos')">Videos</button>
-                <button class="tab" onclick="switchTab('notes')">Notas</button>
-            </div>
-
-            <div id="tab-photos" class="media-grid">
-                <div class="media-item add-btn" onclick="triggerFileUpload('image/*')">+</div>
-            </div>
-
-            <div id="tab-videos" class="media-grid" style="display: none;">
-                <div class="media-item add-btn" onclick="triggerFileUpload('video/*')">+</div>
-            </div>
-
-            <div id="tab-notes" class="notes-list" style="display: none;">
-                <button class="action-btn solid" onclick="addNewNote()" style="padding:10px; font-size:12px;">+ Nueva Nota</button>
-                <div id="notes-container"></div>
-            </div>
-
-            <input type="file" id="fileInput" style="display: none;" onchange="handleFileUpload(event)">
-
-            <!-- Botón flotante claro para regresar a la calculadora -->
-            <button class="back-calc-btn" onclick="lockVault()">⬅ Volver a Calculadora</button>
-
-            <div class="gallery-footer">
-                🔒 Bóveda protegida • Cifrado de Extremo a Extremo
-            </div>
-        </div>
-
-        <!-- ================= PANTALLA 3: ALERTA DE INTRUSO ================= -->
-        <div id="screen-intruder" class="screen">
-            <div class="intruder-header">
-                <div class="intruder-title">
-                    <span>⚠️</span> ALERTA DE INTRUSO
-                </div>
-                <div class="intruder-meta">Hoy • 23:09 • 1 intento detectado</div>
-            </div>
-
-            <div class="intruder-photo-container">
-                <video id="webcam" autoplay playsinline muted style="display:none;"></video>
-                <canvas id="snapshot-canvas" style="display:none;"></canvas>
-                <img id="intruder-photo-display" src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=600&auto=format&fit=crop" alt="Intruso">
-            </div>
-
-            <div class="intruder-info-box">
-                <h3>SE DETECTÓ INTENTO DE ACCESO</h3>
-                <p>Alguien intentó desbloquear el dispositivo sin éxito</p>
-            </div>
-
-            <div class="intruder-actions">
-                <button class="action-btn outline" onclick="showIntruderDetails()">VER DETALLES</button>
-                <button class="action-btn solid" onclick="lockDevice()">BLOQUEAR DISPOSITIVO</button>
-            </div>
-
-            <div class="intruder-footer-note">
-                <span>ⓘ Intrusión registrada • Foto guardada en Bóveda</span>
-            </div>
-        </div>
-
+        <div class="splash-text">CARGANDO SISTEMA SEGURO</div>
     </div>
 
-    <!-- MODAL VISOR DE MEDIOS (Para ver, descargar y eliminar fotos/videos) -->
+    <!-- CONTENEDOR PRINCIPAL DE LA APP -->
+    <div id="app">
+        <div class="iphone-frame">
+
+            <!-- ================= PANTALLA 1: MODO CALCULADORA ================= -->
+            <div id="screen-calc" class="screen active">
+                <div class="calc-mode-title">MODO CALCULADORA</div>
+                
+                <div class="calc-display" id="display">71463</div>
+
+                <div class="calc-keypad">
+                    <button class="btn ac" onclick="clearCalc()">AC</button>
+                    <button class="btn operator" onclick="appendOperator('⌫')">⌫</button>
+                    <button class="btn operator" onclick="appendOperator('÷')">÷</button>
+                    <button class="btn operator" onclick="appendOperator('×')">×</button>
+
+                    <button class="btn" onclick="appendNumber('7')">7</button>
+                    <button class="btn" onclick="appendNumber('8')">8</button>
+                    <button class="btn" onclick="appendNumber('9')">9</button>
+                    <button class="btn operator" onclick="appendOperator('-')">-</button>
+
+                    <button class="btn" onclick="appendNumber('4')">4</button>
+                    <button class="btn" onclick="appendNumber('5')">5</button>
+                    <button class="btn" onclick="appendNumber('6')">6</button>
+                    <button class="btn operator" onclick="appendOperator('+')">+</button>
+
+                    <button class="btn" onclick="appendNumber('1')">1</button>
+                    <button class="btn" onclick="appendNumber('2')">2</button>
+                    <button class="btn" onclick="appendNumber('3')">3</button>
+                    <button class="btn equals" onclick="calculate()">=</button>
+
+                    <button class="btn" onclick="appendNumber('0')" style="grid-column: span 2; width: 100%; border-radius: 35px;">0</button>
+                    <button class="btn" onclick="appendNumber('.')">.</button>
+                </div>
+                
+                <div class="calc-footer">MODO CALCULADORA</div>
+            </div>
+
+            <!-- ================= PANTALLA 2: GALERÍA PRIVADA ================= -->
+            <div id="screen-gallery" class="screen">
+                <div class="gallery-header">
+                    <div class="gallery-title">GALERÍA PRIVADA 🔒</div>
+                    <div class="gallery-subtitle" id="vault-counter">12 ELEMENTOS BLOQUEADA</div>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('photos')">Fotos</button>
+                    <button class="tab" onclick="switchTab('videos')">Videos</button>
+                    <button class="tab" onclick="switchTab('notes')">Notas</button>
+                </div>
+
+                <div id="tab-photos" class="media-grid">
+                    <div class="media-item add-btn" onclick="triggerFileUpload('image/*')">+</div>
+                </div>
+
+                <div id="tab-videos" class="media-grid" style="display: none;">
+                    <div class="media-item add-btn" onclick="triggerFileUpload('video/*')">+</div>
+                </div>
+
+                <div id="tab-notes" class="notes-list" style="display: none;">
+                    <button class="action-btn solid" onclick="addNewNote()" style="padding:10px; font-size:12px;">+ Nueva Nota</button>
+                    <div id="notes-container"></div>
+                </div>
+
+                <input type="file" id="fileInput" style="display: none;" onchange="handleFileUpload(event)">
+
+                <button class="back-calc-btn" onclick="lockVault()">⬅ Volver a Calculadora</button>
+
+                <div class="gallery-footer">
+                    🔒 Bóveda protegida • Cifrado de Extremo a Extremo
+                </div>
+            </div>
+
+            <!-- ================= PANTALLA 3: ALERTA DE INTRUSO ================= -->
+            <div id="screen-intruder" class="screen">
+                <div class="intruder-header">
+                    <div class="intruder-title">
+                        <span>⚠️</span> ALERTA DE INTRUSO
+                    </div>
+                    <div class="intruder-meta">Hoy • 23:09 • 1 intento detectado</div>
+                </div>
+
+                <div class="intruder-photo-container">
+                    <video id="webcam" autoplay playsinline muted style="display:none;"></video>
+                    <canvas id="snapshot-canvas" style="display:none;"></canvas>
+                    <img id="intruder-photo-display" src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=600&auto=format&fit=crop" alt="Intruso">
+                </div>
+
+                <div class="intruder-info-box">
+                    <h3>SE DETECTÓ INTENTO DE ACCESO</h3>
+                    <p>Alguien intentó desbloquear el dispositivo sin éxito</p>
+                </div>
+
+                <div class="intruder-actions">
+                    <button class="action-btn outline" onclick="showIntruderDetails()">VER DETALLES</button>
+                    <button class="action-btn solid" onclick="lockDevice()">BLOQUEAR DISPOSITIVO</button>
+                </div>
+
+                <div class="intruder-footer-note">
+                    <span>ⓘ Intrusión registrada • Foto guardada en Bóveda</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL VISOR DE MEDIOS -->
     <div id="mediaModal" class="modal">
         <div class="modal-content">
             <span class="modal-close" onclick="closeMediaModal()">&times;</span>
@@ -125,5 +204,31 @@
     </div>
 
     <script src="app.js"></script>
+    <script>
+        /* Lógica exacta del Splash Screen (4 segundos: 100 pasos de 40ms) */
+        document.addEventListener("DOMContentLoaded", function() {
+            let currentPercent = 1;
+            const counterElem = document.getElementById("splash-counter");
+            const progressBar = document.getElementById("splash-progress-bar");
+            const splashScreen = document.getElementById("splash-screen");
+            const appContainer = document.getElementById("app");
+
+            const interval = setInterval(function() {
+                currentPercent++;
+                counterElem.innerText = currentPercent + "%";
+                progressBar.style.width = currentPercent + "%";
+
+                if (currentPercent >= 100) {
+                    clearInterval(interval);
+                    // Iniciar fundido de salida (fade out de 0.6s)
+                    splashScreen.style.opacity = "0";
+                    setTimeout(function() {
+                        splashScreen.style.display = "none";
+                        appContainer.style.display = "block";
+                    }, 600);
+                }
+            }, 40); // 100 pasos x 40ms = 4000ms exactos (4 segundos)
+        });
+    </script>
 </body>
 </html>
