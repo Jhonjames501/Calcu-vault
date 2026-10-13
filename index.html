@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CALCU VAULT</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Marco de la App Estilo iPhone -->
+    <div class="iphone-frame">
+        
+        <!-- Header exacto de la referencia -->
+        <div class="status-bar">
+            <span>📶 CALCU VAULT | 23:11 | Lima, Perú 84%</span>
+        </div>
+
+        <!-- ================= PANTALLA 1: MODO CALCULADORA ================= -->
+        <div id="screen-calc" class="screen active">
+            <div class="calc-mode-title">MODO CALCULADORA</div>
+            
+            <div class="calc-display" id="display">71463</div>
+
+            <div class="calc-keypad">
+                <button class="btn ac" onclick="clearCalc()">AC</button>
+                <button class="btn operator" onclick="appendOperator('⌫')">⌫</button>
+                <button class="btn operator" onclick="appendOperator('÷')">÷</button>
+                <button class="btn operator" onclick="appendOperator('×')">×</button>
+
+                <button class="btn" onclick="appendNumber('7')">7</button>
+                <button class="btn" onclick="appendNumber('8')">8</button>
+                <button class="btn" onclick="appendNumber('9')">9</button>
+                <button class="btn operator" onclick="appendOperator('-')">-</button>
+
+                <button class="btn" onclick="appendNumber('4')">4</button>
+                <button class="btn" onclick="appendNumber('5')">5</button>
+                <button class="btn" onclick="appendNumber('6')">6</button>
+                <button class="btn operator" onclick="appendOperator('+')">+</button>
+
+                <button class="btn" onclick="appendNumber('1')">1</button>
+                <button class="btn" onclick="appendNumber('2')">2</button>
+                <button class="btn" onclick="appendNumber('3')">3</button>
+                <button class="btn equals" onclick="calculate()">=</button>
+
+                <button class="btn" onclick="appendNumber('0')" style="grid-column: span 2; width: 100%; border-radius: 35px;">0</button>
+                <button class="btn" onclick="appendNumber('.')">.</button>
+            </div>
+            
+            <div class="calc-footer">MODO CALCULADORA</div>
+        </div>
+
+        <!-- ================= PANTALLA 2: GALERÍA PRIVADA ================= -->
+        <div id="screen-gallery" class="screen">
+            <div class="gallery-header">
+                <div class="gallery-title">GALERÍA PRIVADA</div>
+                <div class="gallery-subtitle" id="vault-counter">12 ELEMENTOS BLOQUEADA</div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('photos')">Fotos</button>
+                <button class="tab" onclick="switchTab('videos')">Videos</button>
+                <button class="tab" onclick="switchTab('notes')">Notas</button>
+            </div>
+
+            <div id="tab-photos" class="media-grid">
+                <div class="media-item add-btn" onclick="triggerFileUpload('image/*')">+</div>
+                <!-- Grilla de elementos borrosos con candado simulando la referencia -->
+                <div class="media-item"><div class="lock-overlay">🔒</div></div>
+                <div class="media-item"><div class="lock-overlay">🔒</div></div>
+                <div class="media-item"><div class="lock-overlay">🔒</div></div>
+                <div class="media-item"><div class="lock-overlay">🔒</div></div>
+                <div class="media-item"><div class="lock-overlay">🔒</div></div>
+                <div class="media-item"><div class="lock-overlay">🔒</div></div>
+                <div class="media-item"><div class="lock-overlay">🔒</div></div>
+                <div class="media-item"><div class="lock-overlay">🔒</div></div>
+            </div>
+
+            <div id="tab-videos" class="media-grid" style="display: none;">
+                <div class="media-item add-btn" onclick="triggerFileUpload('video/*')">+</div>
+            </div>
+
+            <div id="tab-notes" class="notes-list" style="display: none;">
+                <button class="action-btn solid" onclick="addNewNote()" style="padding:10px; font-size:12px;">+ Nueva Nota</button>
+                <div id="notes-container"></div>
+            </div>
+
+            <input type="file" id="fileInput" style="display: none;" onchange="handleFileUpload(event)">
+
+            <div class="gallery-footer">
+                🔒 Bóveda protegida • Cifrado de Extremo a Extremo
+            </div>
+        </div>
+
+        <!-- ================= PANTALLA 3: ALERTA DE INTRUSO ================= -->
+        <div id="screen-intruder" class="screen">
+            <div class="intruder-header">
+                <div class="intruder-title">
+                    <span>⚠️</span> ALERTA DE INTRUSO
+                </div>
+                <div class="intruder-meta">Hoy • 23:09 • 1 intento detectado</div>
+            </div>
+
+            <div class="intruder-photo-container">
+                <video id="webcam" autoplay playsinline muted style="display:none;"></video>
+                <canvas id="snapshot-canvas" style="display:none;"></canvas>
+                <!-- Imagen idéntica a la referencia del intruso con capucha -->
+                <img id="intruder-photo-display" src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=600&auto=format&fit=crop" alt="Intruso">
+            </div>
+
+            <div class="intruder-info-box">
+                <h3>SE DETECTÓ INTENTO DE ACCESO</h3>
+                <p>Alguien intentó desbloquear el dispositivo sin éxito</p>
+            </div>
+
+            <div class="intruder-actions">
+                <button class="action-btn outline" onclick="showIntruderDetails()">VER DETALLES</button>
+                <button class="action-btn solid" onclick="lockDevice()">BLOQUEAR DISPOSITIVO</button>
+            </div>
+
+            <div class="intruder-footer-note">
+                <span>ⓘ Intrusión registrada • Foto guardada en Bóveda</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
