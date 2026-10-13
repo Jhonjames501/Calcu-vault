@@ -148,27 +148,14 @@ function closeMediaModal() {
 }
 
 function downloadCurrentMedia() {
-    try {
-        let win = window.open();
-        if (win) {
-            win.document.write(`
-                <html>
-                    <head><title>Guardar Archivo - CALCU VAULT</title></head>
-                    <body style="margin:0; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh;">
-                        <p style="color:#fff; font-family:sans-serif; font-size:14px; margin-bottom:15px; text-align:center;">Mantén presionada la imagen y selecciona "Descargar imagen"</p>
-                        <img src="${activeModalItem.data}" style="max-width:90%; max-height:80vh; object-fit:contain; border-radius:10px;" />
-                    </body>
-                </html>
-            `);
-            win.document.close();
-        } else {
-            const a = document.createElement('a');
-            a.href = activeModalItem.data;
-            a.target = '_blank';
-            a.click();
-        }
-    } catch (e) {
-        alert("Mantén presionada la imagen en pantalla para guardarla en tu galería.");
+    // Envía la imagen directamente a Kodular para que la app nativa la gestione y guarde
+    if (window.AppInventor) {
+        window.AppInventor.setWebViewString(activeModalItem.data);
+    } else {
+        const a = document.createElement('a');
+        a.href = activeModalItem.data;
+        a.download = activeModalItem.type === 'photo' ? `CalcuVault_${Date.now()}.png` : `CalcuVault_${Date.now()}.mp4`;
+        a.click();
     }
 }
 
