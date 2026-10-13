@@ -6,7 +6,6 @@
     <title>CALCU VAULT</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilos específicos para la Pantalla de Splash */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -23,12 +22,58 @@
             padding: 20px;
         }
 
-        .splash-logo {
-            width: 220px;
-            max-width: 70%;
-            height: auto;
-            margin-bottom: 30px;
-            filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.4));
+        /* Contenedor del escudo corporativo en código */
+        .splash-brand-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .splash-shield-icon {
+            width: 110px;
+            height: 130px;
+            background: linear-gradient(145deg, #12151c, #090b10);
+            border: 2px solid rgba(59, 130, 246, 0.6);
+            border-radius: 20px 20px 60px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 35px rgba(0, 212, 255, 0.35), inset 0 0 15px rgba(0, 212, 255, 0.2);
+            margin-bottom: 22px;
+        }
+
+        /* Candado central del escudo */
+        .splash-lock {
+            width: 28px;
+            height: 24px;
+            border: 3px solid #00d4ff;
+            border-radius: 6px;
+            position: relative;
+            box-shadow: 0 0 10px #00d4ff;
+        }
+
+        .splash-lock::before {
+            content: '';
+            position: absolute;
+            top: -14px;
+            left: 5px;
+            width: 14px;
+            height: 14px;
+            border: 3px solid #00d4ff;
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .splash-title-text {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 26px;
+            font-weight: 300;
+            letter-spacing: 6px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.4);
+            margin-left: 6px; /* Compensar letter-spacing */
         }
 
         .splash-counter {
@@ -65,7 +110,6 @@
             font-weight: 600;
         }
 
-        /* Ocultar la app principal inicialmente */
         #app {
             display: none;
             width: 100%;
@@ -75,9 +119,15 @@
 </head>
 <body>
 
-    <!-- PANTALLA DE SPLASH (4 Segundos Exactos) -->
+    <!-- PANTALLA DE SPLASH (4 Segundos Exactos con el Escudo Creado) -->
     <div id="splash-screen">
-        <img src="splash.png" alt="Calcu Vault Shield" class="splash-logo">
+        <div class="splash-brand-container">
+            <div class="splash-shield-icon">
+                <div class="splash-lock"></div>
+            </div>
+            <div class="splash-title-text">CALCU VAULT</div>
+        </div>
+
         <div class="splash-counter" id="splash-counter">1%</div>
         <div class="splash-progress-container">
             <div class="splash-progress-bar" id="splash-progress-bar"></div>
@@ -205,7 +255,6 @@
 
     <script src="app.js"></script>
     <script>
-        /* Lógica exacta del Splash Screen (4 segundos: 100 pasos de 40ms) */
         document.addEventListener("DOMContentLoaded", function() {
             let currentPercent = 1;
             const counterElem = document.getElementById("splash-counter");
@@ -220,14 +269,13 @@
 
                 if (currentPercent >= 100) {
                     clearInterval(interval);
-                    // Iniciar fundido de salida (fade out de 0.6s)
                     splashScreen.style.opacity = "0";
                     setTimeout(function() {
                         splashScreen.style.display = "none";
                         appContainer.style.display = "block";
                     }, 600);
                 }
-            }, 40); // 100 pasos x 40ms = 4000ms exactos (4 segundos)
+            }, 40); // 4 segundos exactos
         });
     </script>
 </body>
