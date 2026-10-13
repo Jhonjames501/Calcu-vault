@@ -121,7 +121,6 @@ function loadVaultData() {
     let notes = JSON.parse(localStorage.getItem('calcu_notes') || '[]');
     notes.forEach((note, idx) => {
         let card = document.createElement('div');
-        card.className.style = '';
         card.className = 'note-card';
         card.innerHTML = `<h4>${note.title}</h4><p>${note.content}</p><button class="note-delete" onclick="deleteNote(${idx})">Eliminar</button>`;
         notesContainer.appendChild(card);
@@ -148,18 +147,9 @@ function closeMediaModal() {
     document.getElementById('mediaModal').style.display = 'none';
 }
 
-// Método adaptado para WebView: Muestra un enlace directo de descarga interactivo dentro del modal
+// Solución definitiva para WebView: Muestra un aviso claro para guardar la imagen tocándola
 function downloadCurrentMedia() {
-    const container = document.getElementById('modal-body-container');
-    const fileName = activeModalItem.type === 'photo' ? 'CalcuVault_Foto.png' : 'CalcuVault_Video.mp4';
-    
-    container.innerHTML = `
-        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:300px; text-align:center; padding:20px;">
-            <p style="color:#fff; margin-bottom:15px; font-size:14px;">Toca el botón de abajo para guardar tu archivo:</p>
-            <a href="${activeModalItem.data}" download="${fileName}" class="action-btn solid" style="display:block; text-align:center; line-height:normal; text-decoration:none; margin-bottom:15px;">📥 Guardar Archivo en el Celular</a>
-            <p style="color:#9ca3af; font-size:11px;">(Si no descarga automáticamente, mantén presionada la imagen anterior o usa el botón de descarga)</p>
-        </div>
-    `;
+    alert("Para guardar esta imagen en tu celular, mantén presionada la foto en pantalla y selecciona 'Descargar imagen' o 'Guardar en galería'.");
 }
 
 function deleteCurrentMedia() {
