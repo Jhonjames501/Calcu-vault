@@ -66,7 +66,7 @@ function calculate() {
         let result = eval(evalString);
         currentInput = String(result);
         updateDisplay();
-    } catch (e) {
+    } (e) {
         currentInput = "Error";
         updateDisplay();
         setTimeout(clearCalc, 1000);
