@@ -15,7 +15,7 @@
         body, html {
             width: 100%;
             height: 100%;
-            background-color: #0b0b0d;
+            background-color: #000000;
             overflow: hidden;
             display: flex;
             justify-content: center;
@@ -34,7 +34,7 @@
             overflow: hidden;
         }
 
-        /* Fondo con la imagen artística */
+        /* Fondo general */
         .bg-image {
             position: absolute;
             top: 0;
@@ -45,30 +45,31 @@
             z-index: 1;
         }
 
-        /* Pantalla Splash & Loading */
-        .splash-screen {
+        /* 1. PANTALLA DE CARGA (SPLASH & LOADING) */
+        #splash-screen {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 10;
+            z-index: 20;
+            background: #000000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.6s ease;
+            transition: opacity 0.5s ease;
         }
 
         .splash-content {
             position: relative;
-            z-index: 2;
+            z-index: 21;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             width: 80%;
-            margin-top: -40px;
+            margin-top: -30px;
         }
 
         .calc-logo-box {
@@ -83,7 +84,7 @@
             padding: 12px;
             box-shadow: 0 0 25px rgba(255, 140, 0, 0.7), inset 0 0 15px rgba(255, 140, 0, 0.4);
             margin-bottom: 25px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.5);
         }
 
         .calc-screen-sim {
@@ -116,14 +117,13 @@
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
         }
 
-        /* Barra de carga */
         .loading-container {
             width: 100%;
             height: 12px;
-            background: rgba(20, 20, 20, 0.7);
+            background: rgba(20, 20, 20, 0.8);
             border: 2px solid rgba(255, 140, 0, 0.5);
             border-radius: 10px;
-            margin-top: 50px;
+            margin-top: 45px;
             overflow: hidden;
             box-shadow: 0 0 15px rgba(255, 140, 0, 0.3);
         }
@@ -146,15 +146,15 @@
             text-shadow: 0 0 10px rgba(0,0,0,0.8);
         }
 
-        /* Pantalla de la Calculadora Profesional Funcional */
-        .calculator-container {
+        /* 2. PANTALLA DE LA CALCULADORA (Inicialmente oculta) */
+        #calculator-screen {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 5;
-            display: flex;
+            z-index: 10;
+            display: none; /* Se oculta hasta que termine la carga */
             flex-direction: column;
             justify-content: flex-end;
             padding: 25px 20px;
@@ -162,7 +162,7 @@
 
         .calc-glass-panel {
             width: 100%;
-            background: rgba(15, 15, 18, 0.75);
+            background: rgba(15, 15, 18, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 140, 0, 0.25);
@@ -239,13 +239,13 @@
         }
 
         .btn-gray {
-            background-color: rgba(40, 40, 44, 0.85);
+            background-color: rgba(40, 40, 44, 0.9);
             color: #ffffff;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .btn-light-gray {
-            background-color: rgba(165, 165, 167, 0.85);
+            background-color: rgba(165, 165, 167, 0.9);
             color: #000000;
             font-weight: 500;
         }
@@ -270,11 +270,11 @@
 
     <div class="app-container">
         
-        <!-- REEMPLAZA 'novacalc-bg.png' POR EL NOMBRE EXACTO DE TU IMAGEN EN GITHUB -->
+        <!-- CAMBIA 'novacalc-bg.png' POR EL NOMBRE EXACTO DE TU IMAGEN EN GITHUB -->
         <img src="novacalc-bg.png" class="bg-image" alt="Fondo NovaCalc">
 
-        <!-- PANTALLA SPLASH & LOADING -->
-        <div id="splash-screen" class="splash-screen">
+        <!-- 1. PANTALLA DE CARGA (SPLASH & LOADING) -->
+        <div id="splash-screen">
             <div class="splash-content">
                 <div class="calc-logo-box">
                     <div class="calc-screen-sim"></div>
@@ -298,8 +298,8 @@
             </div>
         </div>
 
-        <!-- CALCULADORA FUNCIONAL -->
-        <div class="calculator-container">
+        <!-- 2. PANTALLA DE LA CALCULADORA FUNCIONAL -->
+        <div id="calculator-screen">
             <div class="calc-glass-panel">
                 <div class="calc-header-brand">
                     <div class="mini-logo">N</div> NovaCalc
@@ -340,9 +340,10 @@
         let currentInput = "0";
         let isResultDisplayed = false;
 
-        // Secuencia de animación de carga al abrir la app
+        // Secuencia de carga: 2 segundos estáticos + 4 segundos cargando del 1% al 100%
         window.addEventListener('DOMContentLoaded', () => {
             const splashScreen = document.getElementById('splash-screen');
+            const calcScreen = document.getElementById('calculator-screen');
             const loadingBar = document.getElementById('loading-bar');
             const loadingText = document.getElementById('loading-text');
 
@@ -357,13 +358,15 @@
                         percentage++;
                     } else {
                         clearInterval(loadInterval);
+                        // Desvanece la pantalla de carga y muestra la calculadora
                         splashScreen.style.opacity = '0';
                         setTimeout(() => {
                             splashScreen.style.display = 'none';
-                        }, 600);
+                            calcScreen.style.display = 'flex'; // Muestra la calculadora limpia
+                        }, 500);
                     }
-                }, 40); // Llega al 100% en 4 segundos exactos
-            }, 2000);
+                }, 40); // 40ms * 100 pasos = 4 segundos exactos
+            }, 2000); // 2 segundos del splash inicial
         });
 
         function updateDisplay() {
@@ -412,7 +415,6 @@
                 return;
             }
 
-            // Evita acumular operadores seguidos
             let lastChar = currentInput.trim().slice(-1);
             if (['+', '-', '×', '÷'].includes(lastChar)) {
                 currentInput = currentInput.trim().slice(0, -1) + " " + op + " ";
@@ -430,14 +432,12 @@
 
         function calculate() {
             try {
-                // Traduce los símbolos visuales a operaciones válidas de JavaScript
                 let evalString = currentInput
                     .replace(/×/g, '*')
                     .replace(/÷/g, '/');
 
                 let result = eval(evalString);
                 
-                // Evita decimales infinitos larguísimos
                 if (!Number.isInteger(result)) {
                     result = parseFloat(result.toFixed(6));
                 }
