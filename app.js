@@ -1,11 +1,10 @@
 let currentInput = "0";
 
-// Al cargar la página, iniciamos el contador del porcentaje y la transición de 4 segundos
+// Al cargar la página, iniciamos el contador del porcentaje del 1 al 100 en 4 segundos (4000ms)
 window.addEventListener('DOMContentLoaded', () => {
     let percentage = 1;
     const progressText = document.getElementById('loading-percentage'); 
     
-    // Intervalo de 40ms para que en 4 segundos (4000ms) llegue exactamente al 100%
     let loadInterval = setInterval(() => {
         if (percentage <= 100) {
             if (progressText) {
@@ -16,7 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
             clearInterval(loadInterval);
             hideSplashAndShowCalc();
         }
-    }, 40);
+    }, 40); // 40ms * 100 pasos = 4000ms (4 segundos exactos)
 });
 
 function hideSplashAndShowCalc() {
@@ -26,7 +25,7 @@ function hideSplashAndShowCalc() {
         splash.style.opacity = '0';
         setTimeout(() => {
             splash.style.display = 'none';
-        }, 500); // Transición de desvanecimiento
+        }, 500); // Transición de desvanecimiento suave
     }
 }
 
@@ -66,7 +65,7 @@ function calculate() {
         let result = eval(evalString);
         currentInput = String(result);
         updateDisplay();
-    } (e) {
+    } catch (e) {
         currentInput = "Error";
         updateDisplay();
         setTimeout(clearCalc, 1000);
