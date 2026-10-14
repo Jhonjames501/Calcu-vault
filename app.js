@@ -1,12 +1,40 @@
 let currentInput = "0";
 
-function switchScreen(screenName) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(`screen-${screenName}`).classList.add('active');
+// Al cargar la página, iniciamos el contador del porcentaje y la transición de 4 segundos
+window.addEventListener('DOMContentLoaded', () => {
+    let percentage = 1;
+    const progressText = document.getElementById('loading-percentage'); 
+    
+    // Intervalo de 40ms para que en 4 segundos (4000ms) llegue exactamente al 100%
+    let loadInterval = setInterval(() => {
+        if (percentage <= 100) {
+            if (progressText) {
+                progressText.innerText = percentage + "%";
+            }
+            percentage++;
+        } else {
+            clearInterval(loadInterval);
+            hideSplashAndShowCalc();
+        }
+    }, 40);
+});
+
+function hideSplashAndShowCalc() {
+    const splash = document.getElementById('splash-screen');
+    
+    if (splash) {
+        splash.style.opacity = '0';
+        setTimeout(() => {
+            splash.style.display = 'none';
+        }, 500); // Transición de desvanecimiento
+    }
 }
 
 function updateDisplay() {
-    document.getElementById('display').innerText = currentInput;
+    const displayElement = document.getElementById('display');
+    if (displayElement) {
+        displayElement.innerText = currentInput;
+    }
 }
 
 function appendNumber(num) {
@@ -33,7 +61,6 @@ function clearCalc() {
 }
 
 function calculate() {
-    // Ya no hay códigos secretos; aquí solo realiza operaciones matemáticas normales
     try {
         let evalString = currentInput.replace(/×/g, '*').replace(/÷/g, '/');
         let result = eval(evalString);
