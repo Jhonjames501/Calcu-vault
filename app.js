@@ -1,34 +1,5 @@
 let currentInput = "0";
 
-// Al cargar la página, iniciamos el contador del porcentaje del 1 al 100 en 4 segundos (4000ms)
-window.addEventListener('DOMContentLoaded', () => {
-    let percentage = 1;
-    const progressText = document.getElementById('loading-percentage'); 
-    
-    let loadInterval = setInterval(() => {
-        if (percentage <= 100) {
-            if (progressText) {
-                progressText.innerText = percentage + "%";
-            }
-            percentage++;
-        } else {
-            clearInterval(loadInterval);
-            hideSplashAndShowCalc();
-        }
-    }, 40); // 40ms * 100 pasos = 4000ms (4 segundos exactos)
-});
-
-function hideSplashAndShowCalc() {
-    const splash = document.getElementById('splash-screen');
-    
-    if (splash) {
-        splash.style.opacity = '0';
-        setTimeout(() => {
-            splash.style.display = 'none';
-        }, 500); // Transición de desvanecimiento suave
-    }
-}
-
 function updateDisplay() {
     const displayElement = document.getElementById('display');
     if (displayElement) {
@@ -47,8 +18,18 @@ function appendNumber(num) {
 
 function appendOperator(op) {
     if(op === '⌫') {
-        currentInput = currentInput.slice(0, -1) || "0";
+        // Operación de borrado (retroceso)
+        currentInput = currentInput.slice(0, -1);
+        // Si queda vacío, vuelve a mostrar el 0
+        if (currentInput === "") {
+            currentInput = "0";
+        }
     } else {
+        // Evita agregar operadores dobles seguidos
+        let lastChar = currentInput.slice(-1);
+        if (['+', '-', '×', '÷', '%'].includes(lastChar)) {
+            return; 
+        }
         currentInput += " " + op + " ";
     }
     updateDisplay();
@@ -61,13 +42,25 @@ function clearCalc() {
 
 function calculate() {
     try {
+        // Reemplaza los símbolos visuales por los de JavaScript para el cálculo
         let evalString = currentInput.replace(/×/g, '*').replace(/÷/g, '/');
+        
+        // Ejecuta el cálculo matemático
         let result = eval(evalString);
+        
+        // Convierte el resultado a cadena y lo muestra
         currentInput = String(result);
         updateDisplay();
     } catch (e) {
+        // Muestra error si la operación no es válida
         currentInput = "Error";
         updateDisplay();
+        // Limpia la pantalla después de un segundo
         setTimeout(clearCalc, 1000);
     }
 }
+
+// Inicializa la pantalla al cargar la página
+window.addEventListener('DOMContentLoaded', () => {
+    clearCalc();
+});
